@@ -1,6 +1,6 @@
 {
   "name": "escrowwallet",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "multisig escrow wallet",
   "main": "src/escrowwallet.js",
   "dependencies": {
@@ -10,8 +10,12 @@
     "type": "git",
     "url": "https://github.com/ColoredCoinsEscrow/EscrowWallet.git"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3"
-  }
+  },
+  "license": "BSD-3-Clause"
 }
