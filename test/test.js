@@ -49,8 +49,8 @@ describe('EscrowWallet', function() {
 
     it('getWIF() should create a new key', function() {
       var wif = this.wallet.getWIF();
-      expect(typeof wif).to.equal('string');
-      expect(wif.length).to.equal(52);
+      expect(wif).to.be.a('string');
+      expect(wif).to.have.lengthOf(52);
     });
 
     it('getWIF() should always return the same key', function() {
