@@ -34,6 +34,14 @@ var expectedPartiallySignedTx = '01000000010541e698f0681f89cf06e8b05997a9c1e8f85
 var expectedFullySignedTx = '01000000010541e698f0681f89cf06e8b05997a9c1e8f85fc91ee6df369ddb70d4ae650e6e00000000d900473044022032ce43939e558c0a0aaeab01118632d447f0a7bd8001beab566fda531d87b25f0220640dad3ff3802c1867ffcb58a123a9b44409789ab5d66d505385ead1713a9c240147304402205d4d15a387eaad6f568adedb478a9d02fe84a79787f3891fd47b77ad66056e89022068656464a61d1bb7f232daffb27baff57c9a042334a8d10d7b6539f87dc0fbbb0147522103b3931eec7cf5357b3405c7127fd827f985d0ee2a7779a63fb06605626536d6ca2102236919c606bce80134eaff2bb988e3a274527f6084dc90cef56ee6438532d5f952aeffffffff01204e00000000000017a914cd7b44d0b03f2d026d1e586d7ae18903b0d385f68700000000';
 
 describe('EscrowWallet', function() {
+  context('with a missing public key', function() {
+    it('should throw an error', function() {
+      expect(function() {
+        new EscrowWallet()
+      }).to.throw(Error, /public key must be supplied/);
+    });
+  });
+
   context('when not supplied with a key', function() {
     beforeEach(function() {
       this.wallet = new EscrowWallet(pubKey);
@@ -106,6 +114,22 @@ describe('EscrowWallet', function() {
       });
 
       describe('signTransaction()', function() {
+        context('with invalid arguments', function() {
+          it('should throw an error when input index not valid', function() {
+            var self = this;
+            expect(function() {
+              self.wallet.signTransaction(unsigned_tx, 4);
+            }).to.throw(Error, /No input at index: 4/);
+          });
+
+          it('should throw an error when transaction not a hex', function() {
+            var self = this;
+            expect(function() {
+              self.wallet.signTransaction('notahex', input_index);
+            }).to.throw(Error, /Invalid hex string/);
+          });
+        });
+
         context('with an unsigned transaction', function() {
           it('should return a semi-signed transaction', function() {
             var signedTransaction = this.wallet.signTransaction(unsigned_tx, input_index);
